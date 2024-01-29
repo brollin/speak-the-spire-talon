@@ -1,32 +1,49 @@
 import time
 import typing
+import urllib.request
+import json
 from talon import Module, Context, ui, ctrl, canvas, screen, actions, app
 from talon.skia import Paint, Image
 from talon.types import point
 
+HOST = "localhost"
+PORT = 10463
+
 mod = Module()
 ctx = Context()
+
+
+def long_click(mouse_button: int):
+    if mouse_button >= 0:
+        time.sleep(0.1)
+        ctrl.mouse_click(button=mouse_button, down=True)
+        time.sleep(0.1)
+        ctrl.mouse_click(button=mouse_button, down=False)
 
 
 class SayTheSpireController:
     screen = None
 
     monsters = []
+    potions = []
+    relics = []
 
     def __init__(self) -> None:
         self.screen = ui.screens()[0]
 
-    def remap_enemies(self):
-        import urllib.request
-        import json
-
+    def fetch_data(self, path: str) -> dict:
         try:
-            monster_data = json.loads(
-                urllib.request.urlopen("http://localhost:10463/monsters").read()
+            data = json.loads(
+                urllib.request.urlopen(f"http://{HOST}:{PORT}/{path}").read()
             )
         except Exception as e:
-            app.notify("Say the Spire", "Error fetching monsters: " + str(e))
-            return
+            app.notify("Say the Spire", f"Error fetching {path} data: {str(e)}")
+            raise e
+
+        return data
+
+    def fetch_monster_data(self):
+        monster_data = self.fetch_data("monsters")
 
         # flip the y coordinates to match Talon's
         for monster in monster_data["monsters"]:
@@ -34,20 +51,53 @@ class SayTheSpireController:
 
         self.monsters = monster_data["monsters"]
 
-    def go_to_enemy(self, enemy_number: int, click: int = -1):
-        if len(self.monsters) < enemy_number:
-            print(f"enemy #{enemy_number} not found")
+    def fetch_potion_data(self):
+        potion_data = self.fetch_data("potions")
+
+        # flip the y coordinates to match Talon's
+        for potion in potion_data["potions"]:
+            potion["y"] = self.screen.height - potion["y"]
+
+        self.potions = potion_data["potions"]
+
+    def fetch_relic_data(self):
+        relic_data = self.fetch_data("relics")
+
+        # flip the y coordinates to match Talon's
+        for relic in relic_data["relics"]:
+            relic["y"] = self.screen.height - relic["y"]
+
+        self.relics = relic_data["relics"]
+
+    def go_to_monster(self, monster_number: int, click: int = -1):
+        if len(self.monsters) < monster_number:
+            app.notifying(f"monster #{monster_number} not found")
             return
 
-        monster = self.monsters[enemy_number - 1]
+        monster = self.monsters[monster_number - 1]
 
         ctrl.mouse_move(monster["x"], monster["y"])
+        long_click(click)
 
-        if click >= 0:
-            time.sleep(0.1)
-            ctrl.mouse_click(button=click, down=True)
-            time.sleep(0.1)
-            ctrl.mouse_click(button=click, down=False)
+    def go_to_potion(self, potion_number: int, click: int = -1):
+        if len(self.potions) < potion_number:
+            print(f"potion #{potion_number} not found")
+            return
+
+        potion = self.potions[potion_number - 1]
+
+        ctrl.mouse_move(potion["x"], potion["y"])
+        long_click(click)
+
+    def go_to_relic(self, relic_number: int, click: int = -1):
+        if len(self.relics) < relic_number:
+            print(f"relic #{relic_number} not found")
+            return
+
+        relic = self.relics[relic_number - 1]
+
+        ctrl.mouse_move(relic["x"], relic["y"])
+        long_click(click)
 
 
 say_the_spire_controller = SayTheSpireController()
@@ -55,12 +105,17 @@ say_the_spire_controller = SayTheSpireController()
 
 @mod.action_class
 class SayTheSpireActions:
-    def spire_enemy(number: int, click: int = -1):
-        """Mouseover an enemy"""
-        say_the_spire_controller.remap_enemies()
-        say_the_spire_controller.go_to_enemy(number, click)
+    def spire_monster(monster_number: int, click: int = -1):
+        """Mouseover an monster"""
+        say_the_spire_controller.fetch_monster_data()
+        say_the_spire_controller.go_to_monster(monster_number, click)
 
-    def spire_remap_enemies():
-        """Remap all enemies"""
-        say_the_spire_controller.remap_enemies()
-        say_the_spire_controller.go_to_enemy(1)
+    def spire_potion(potion_number: int, click: int = -1):
+        """Mouseover a potion"""
+        say_the_spire_controller.fetch_potion_data()
+        say_the_spire_controller.go_to_potion(potion_number, click)
+
+    def spire_relic(relic_number: int, click: int = -1):
+        """Mouseover a relic"""
+        say_the_spire_controller.fetch_relic_data()
+        say_the_spire_controller.go_to_relic(relic_number, click)
