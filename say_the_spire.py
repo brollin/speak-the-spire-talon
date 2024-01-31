@@ -27,6 +27,8 @@ class SayTheSpireController:
     monsters = []
     potions = []
     relics = []
+    rewards = []
+    boss_relics = []
 
     def __init__(self) -> None:
         self.screen = ui.screens()[0]
@@ -84,6 +86,24 @@ class SayTheSpireController:
 
         self.relics = relic_data
 
+    def fetch_reward_data(self):
+        reward_data = self.fetch_data("rewards")
+
+        # flip the y coordinates to match Talon's
+        for reward in reward_data:
+            reward["y"] = self.screen.height - reward["y"]
+
+        self.rewards = reward_data
+
+    def fetch_boss_relic_data(self):
+        boss_relic_data = self.fetch_data("bossRelics")
+
+        # flip the y coordinates to match Talon's
+        for boss_relic in boss_relic_data:
+            boss_relic["y"] = self.screen.height - boss_relic["y"]
+
+        self.boss_relics = boss_relic_data
+
     def go_to_player(self):
         ctrl.mouse_move(self.player["x"], self.player["y"])
 
@@ -97,7 +117,7 @@ class SayTheSpireController:
         ctrl.mouse_move(monster["x"], monster["y"])
         long_click(click)
 
-    def go_to_potion(self, potion_number: int, click: int = -1):
+    def go_to_potion(self, potion_number: int):
         if len(self.potions) < potion_number:
             print(f"potion #{potion_number} not found")
             return
@@ -105,7 +125,6 @@ class SayTheSpireController:
         potion = self.potions[potion_number - 1]
 
         ctrl.mouse_move(potion["x"], potion["y"])
-        long_click(click)
 
     def use_potion(self, potion_number: int, operation: str):
         if len(self.potions) < potion_number:
@@ -114,7 +133,7 @@ class SayTheSpireController:
 
         self.post_data(f"usePotion?index={potion_number - 1}&operation={operation}")
 
-    def go_to_relic(self, relic_number: int, click: int = -1):
+    def go_to_relic(self, relic_number: int):
         if len(self.relics) < relic_number:
             print(f"relic #{relic_number} not found")
             return
@@ -122,7 +141,24 @@ class SayTheSpireController:
         relic = self.relics[relic_number - 1]
 
         ctrl.mouse_move(relic["x"], relic["y"])
-        long_click(click)
+
+    def go_to_reward(self, reward_number: int):
+        if len(self.rewards) < reward_number:
+            # print(f"reward #{reward_number} not found")
+            return
+
+        reward = self.rewards[reward_number - 1]
+
+        ctrl.mouse_move(reward["x"], reward["y"])
+
+    def go_to_boss_relic(self, boss_relic_number: int):
+        if len(self.boss_relics) < boss_relic_number:
+            # print(f"boss relic #{boss_relic_number} not found")
+            return
+
+        boss_relic = self.boss_relics[boss_relic_number - 1]
+
+        ctrl.mouse_move(boss_relic["x"], boss_relic["y"])
 
 
 say_the_spire_controller = SayTheSpireController()
@@ -140,17 +176,31 @@ class SayTheSpireActions:
         say_the_spire_controller.fetch_monster_data()
         say_the_spire_controller.go_to_monster(monster_number, click)
 
-    def spire_potion(potion_number: int, click: int = -1):
+    def spire_potion(potion_number: int):
         """Mouseover a potion"""
         say_the_spire_controller.fetch_potion_data()
-        say_the_spire_controller.go_to_potion(potion_number, click)
+        say_the_spire_controller.go_to_potion(potion_number)
 
     def spire_use_potion(potion_number: int, operation: str = "use"):
         """Use a potion"""
         say_the_spire_controller.fetch_potion_data()
         say_the_spire_controller.use_potion(potion_number, operation)
 
-    def spire_relic(relic_number: int, click: int = -1):
+    def spire_relic(relic_number: int):
         """Mouseover a relic"""
         say_the_spire_controller.fetch_relic_data()
-        say_the_spire_controller.go_to_relic(relic_number, click)
+        say_the_spire_controller.go_to_relic(relic_number)
+
+    def spire_reward(reward_number: int):
+        """Mouseover a reward or boss relic"""
+        # We combine the concept of rewards and boss relics into one action here, because that is
+        # how my brain works.
+        say_the_spire_controller.fetch_reward_data()
+        say_the_spire_controller.fetch_boss_relic_data()
+        say_the_spire_controller.go_to_reward(reward_number)
+        say_the_spire_controller.go_to_boss_relic(reward_number)
+
+    def spire_boss_relic(boss_relic_number: int):
+        """Mouseover a boss relic"""
+        say_the_spire_controller.go_to_reward(boss_relic_number)
+        say_the_spire_controller.go_to_boss_relic(boss_relic_number)
