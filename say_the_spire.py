@@ -98,6 +98,7 @@ class SayTheSpireController:
     relics = []
     rewards = []
     boss_relics = []
+    shop = {}
 
     def __init__(self) -> None:
         self.screen = ui.screens()[0]
@@ -167,6 +168,15 @@ class SayTheSpireController:
         [self.invert_y_coordinate(boss_relic) for boss_relic in boss_relic_data]
         self.boss_relics = boss_relic_data
 
+    def fetch_shop_data(self):
+        shop_data = self.fetch_data("shop")
+        [self.invert_y_coordinate(relic) for relic in shop_data["relics"]]
+        [self.invert_y_coordinate(potion) for potion in shop_data["potions"]]
+        [self.invert_y_coordinate(card) for card in shop_data["coloredCards"]]
+        [self.invert_y_coordinate(card) for card in shop_data["colorlessCards"]]
+        self.invert_y_coordinate(shop_data["removalService"])
+        self.shop = shop_data
+
     def go_to_player(self):
         ctrl.mouse_move(self.player["x"], self.player["y"])
 
@@ -235,6 +245,45 @@ class SayTheSpireController:
 
         ctrl.mouse_move(boss_relic["x"], boss_relic["y"])
 
+    def go_to_shop_card(self, shop_card_number: int):
+        if (
+            len(self.shop["coloredCards"]) + len(self.shop["colorlessCards"])
+            < shop_card_number
+        ):
+            return
+
+        # TODO: clean this up
+        card = (
+            self.shop["coloredCards"][shop_card_number - 1]
+            if shop_card_number <= len(self.shop["coloredCards"])
+            else self.shop["colorlessCards"][
+                shop_card_number - len(self.shop["coloredCards"])
+            ]
+        )
+
+        ctrl.mouse_move(card["x"], card["y"])
+
+    def go_to_shop_potion(self, shop_potion_number: int):
+        if len(self.shop["potions"]) < shop_potion_number:
+            return
+
+        potion = self.shop["potions"][shop_potion_number - 1]
+
+        ctrl.mouse_move(potion["x"], potion["y"])
+
+    def go_to_shop_relic(self, shop_relic_number: int):
+        if len(self.shop["relics"]) < shop_relic_number:
+            return
+
+        relic = self.shop["relics"][shop_relic_number - 1]
+
+        ctrl.mouse_move(relic["x"], relic["y"])
+
+    def go_to_shop_remove(self):
+        ctrl.mouse_move(
+            self.shop["removalService"]["x"], self.shop["removalService"]["y"]
+        )
+
     def navigate(self, navigation_item: str):
         self.post_data(f"navigate?item={navigation_item}")
 
@@ -296,3 +345,23 @@ class SayTheSpireActions:
     def spire_center_mouse():
         """Center the mouse on the screen"""
         say_the_spire_controller.center_mouse()
+
+    def spire_shop_card(card_number: int):
+        """Mouseover a card in the shop"""
+        say_the_spire_controller.fetch_shop_data()
+        say_the_spire_controller.go_to_shop_card(card_number)
+
+    def spire_shop_potion(potion_number: int):
+        """Mouseover a potion in the shop"""
+        say_the_spire_controller.fetch_shop_data()
+        say_the_spire_controller.go_to_shop_potion(potion_number)
+
+    def spire_shop_relic(relic_number: int):
+        """Mouseover a relic in the shop"""
+        say_the_spire_controller.fetch_shop_data()
+        say_the_spire_controller.go_to_shop_relic(relic_number)
+
+    def spire_shop_remove():
+        """Mouseover the removal service in the shop"""
+        say_the_spire_controller.fetch_shop_data()
+        say_the_spire_controller.go_to_shop_remove()
