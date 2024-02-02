@@ -64,6 +64,15 @@ ctx.lists["user.spire_navigation_item"] = {
     "watcher": "watcher",
     "embark": "embark",
     "ascension": "ascension",
+    # Gameplay Menu
+    "save and quit": "saveAndQuit",
+    "save": "saveAndQuit",
+    "abandon run": "abandonRun",
+    "abandon": "abandonRun",
+    "yes": "yes",
+    "no": "no",
+    # Gameplay
+    "reset": "reset",
 }
 ctx.lists["user.spire_potion_operation"] = {
     "drink": "use",
@@ -182,7 +191,7 @@ class SayTheSpireController:
 
     def use_potion(self, operation: str):
         if self.potion_ui["isHidden"]:
-            app.notify("Cannot interact with potion; potion UI is hidden")
+            app.notify("Cannot find potion popup. First say e.g. 'potion one'")
             return
 
         if operation not in ["use", "discard"]:
@@ -228,6 +237,9 @@ class SayTheSpireController:
 
     def navigate(self, navigation_item: str):
         self.post_data(f"navigate?item={navigation_item}")
+
+    def center_mouse(self):
+        ctrl.mouse_move(self.screen.width / 2, self.screen.height / 2)
 
 
 say_the_spire_controller = SayTheSpireController()
@@ -279,5 +291,8 @@ class SayTheSpireActions:
 
     def spire_navigate(spire_navigation_item: str):
         """Navigate using an item in a menu"""
-        print(f"Navigate to {spire_navigation_item}")
         say_the_spire_controller.navigate(spire_navigation_item)
+
+    def spire_center_mouse():
+        """Center the mouse on the screen"""
+        say_the_spire_controller.center_mouse()
