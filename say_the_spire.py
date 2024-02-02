@@ -93,6 +93,10 @@ class SayTheSpireController:
     def __init__(self) -> None:
         self.screen = ui.screens()[0]
 
+    def invert_y_coordinate(self, item_with_coordinates: dict) -> None:
+        # flip the y coordinates to match Talon's
+        item_with_coordinates["y"] = self.screen.height - item_with_coordinates["y"]
+
     def fetch_data(self, path: str) -> dict:
         try:
             data = json.loads(
@@ -113,18 +117,13 @@ class SayTheSpireController:
 
     def fetch_player_data(self):
         player_data = self.fetch_data("player")
-
-        # flip the y coordinates to match Talon's
-        player_data["y"] = self.screen.height - player_data["y"]
+        self.invert_y_coordinate(player_data)
 
         self.player = player_data
 
     def fetch_monster_data(self):
         monster_data = self.fetch_data("monsters")
-
-        # flip the y coordinates to match Talon's
-        for monster in monster_data:
-            monster["y"] = self.screen.height - monster["y"]
+        [self.invert_y_coordinate(monster) for monster in monster_data]
 
         # # filter out dead monsters
         # filtered_monsters = [
@@ -135,51 +134,28 @@ class SayTheSpireController:
 
     def fetch_potion_data(self):
         potion_data = self.fetch_data("potions")
-
-        # flip the y coordinates to match Talon's
-        for potion in potion_data:
-            potion["y"] = self.screen.height - potion["y"]
-
+        [self.invert_y_coordinate(potion) for potion in potion_data]
         self.potions = potion_data
 
     def fetch_potion_ui_data(self):
         potion_ui_data = self.fetch_data("potionUi")
-
-        # flip the y coordinates to match Talon's
-        potion_ui_data["topButton"]["y"] = (
-            self.screen.height - potion_ui_data["topButton"]["y"]
-        )
-        potion_ui_data["bottomButton"]["y"] = (
-            self.screen.height - potion_ui_data["bottomButton"]["y"]
-        )
-
+        self.invert_y_coordinate(potion_ui_data["topButton"])
+        self.invert_y_coordinate(potion_ui_data["bottomButton"])
         self.potion_ui = potion_ui_data
 
     def fetch_relic_data(self):
         relic_data = self.fetch_data("relics")
-
-        # flip the y coordinates to match Talon's
-        for relic in relic_data:
-            relic["y"] = self.screen.height - relic["y"]
-
+        [self.invert_y_coordinate(relic) for relic in relic_data]
         self.relics = relic_data
 
     def fetch_reward_data(self):
         reward_data = self.fetch_data("rewards")
-
-        # flip the y coordinates to match Talon's
-        for reward in reward_data:
-            reward["y"] = self.screen.height - reward["y"]
-
+        [self.invert_y_coordinate(reward) for reward in reward_data]
         self.rewards = reward_data
 
     def fetch_boss_relic_data(self):
         boss_relic_data = self.fetch_data("bossRelics")
-
-        # flip the y coordinates to match Talon's
-        for boss_relic in boss_relic_data:
-            boss_relic["y"] = self.screen.height - boss_relic["y"]
-
+        [self.invert_y_coordinate(boss_relic) for boss_relic in boss_relic_data]
         self.boss_relics = boss_relic_data
 
     def go_to_player(self):
@@ -187,7 +163,7 @@ class SayTheSpireController:
 
     def go_to_monster(self, monster_number: int, click: int = -1):
         if len(self.monsters) < monster_number:
-            app.notifying(f"monster #{monster_number} not found")
+            app.notify(f"monster #{monster_number} not found")
             return
 
         monster = self.monsters[monster_number - 1]
@@ -197,7 +173,7 @@ class SayTheSpireController:
 
     def go_to_potion(self, potion_number: int):
         if len(self.potions) < potion_number:
-            print(f"potion #{potion_number} not found")
+            app.notify(f"potion #{potion_number} not found")
             return
 
         potion = self.potions[potion_number - 1]
@@ -206,22 +182,20 @@ class SayTheSpireController:
 
     def use_potion(self, operation: str):
         if self.potion_ui["isHidden"]:
-            print("Cannot interact with potion; potion UI is hidden")
+            app.notify("Cannot interact with potion; potion UI is hidden")
             return
 
         if operation not in ["use", "discard"]:
-            print(f"Invalid potion operation: {operation}")
+            app.notify(f"Invalid potion operation: {operation}")
             return
 
-        if operation == "use":
-            ctrl.mouse_move(
-                self.potion_ui["topButton"]["x"], self.potion_ui["topButton"]["y"]
-            )
-        else:
-            ctrl.mouse_move(
-                self.potion_ui["bottomButton"]["x"], self.potion_ui["bottomButton"]["y"]
-            )
+        potion_button = (
+            self.potion_ui["topButton"]
+            if operation == "use"
+            else self.potion_ui["bottomButton"]
+        )
 
+        ctrl.mouse_move(potion_button["x"], potion_button["y"])
         time.sleep(0.05)
         ctrl.mouse_click()
 
