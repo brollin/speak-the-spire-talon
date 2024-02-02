@@ -10,7 +10,66 @@ HOST = "localhost"
 PORT = 10463
 
 mod = Module()
+mod.list(
+    "spire_navigation_item",
+    desc="List of all supported Slay the Spire navigation items",
+)
+mod.list(
+    "spire_potion_operation",
+    desc="List of things you can do with potions",
+)
+
 ctx = Context()
+ctx.lists["user.spire_navigation_item"] = {
+    # Main Menu
+    "play": "play",
+    "continue": "resume",
+    "resume": "resume",
+    "abandon": "abandon",
+    "abandon game": "abandon",
+    "compendium": "compendium",
+    "statistics": "statistics",
+    "stats": "statistics",
+    "settings": "settings",
+    "patch notes": "patchNotes",
+    "mods": "mods",
+    "quit": "quit",
+    # Play Panel Menu
+    "standard": "standard",
+    "daily climb": "dailyClimb",
+    "daily": "dailyClimb",
+    "custom": "custom",
+    # Compendium Panel Menu
+    "card library": "cardLibrary",
+    "library": "cardLibrary",
+    "relic collection": "relicCollection",
+    "collection": "relicCollection",
+    "potion lab": "potionLab",
+    "lab": "potionLab",
+    # Statistics Panel Menu
+    "character stats": "characterStats",
+    "leaderboard": "leaderboard",
+    "run history": "runHistory",
+    "history": "runHistory",
+    # Settings Panel Menu
+    "game settings": "gameSettings",
+    "input settings": "inputSettings",
+    "credits": "credits",
+    # Panel Menu Back Button
+    "back": "back",
+    # Character Select
+    "ironclad": "ironclad",
+    "silent": "silent",
+    "defect": "defect",
+    "watcher": "watcher",
+    "embark": "embark",
+    "ascension": "ascension",
+}
+ctx.lists["user.spire_potion_operation"] = {
+    "drink": "use",
+    "throw": "use",
+    "discard": "discard",
+}
 
 
 def long_click(mouse_button: int):
@@ -26,6 +85,7 @@ class SayTheSpireController:
 
     monsters = []
     potions = []
+    potion_ui = {}
     relics = []
     rewards = []
     boss_relics = []
@@ -66,6 +126,11 @@ class SayTheSpireController:
         for monster in monster_data:
             monster["y"] = self.screen.height - monster["y"]
 
+        # # filter out dead monsters
+        # filtered_monsters = [
+        #     monster for monster in monster_data if monster["currentHealth"] > 0
+        # ]
+
         self.monsters = monster_data
 
     def fetch_potion_data(self):
@@ -76,6 +141,19 @@ class SayTheSpireController:
             potion["y"] = self.screen.height - potion["y"]
 
         self.potions = potion_data
+
+    def fetch_potion_ui_data(self):
+        potion_ui_data = self.fetch_data("potionUi")
+
+        # flip the y coordinates to match Talon's
+        potion_ui_data["topButton"]["y"] = (
+            self.screen.height - potion_ui_data["topButton"]["y"]
+        )
+        potion_ui_data["bottomButton"]["y"] = (
+            self.screen.height - potion_ui_data["bottomButton"]["y"]
+        )
+
+        self.potion_ui = potion_ui_data
 
     def fetch_relic_data(self):
         relic_data = self.fetch_data("relics")
@@ -126,12 +204,26 @@ class SayTheSpireController:
 
         ctrl.mouse_move(potion["x"], potion["y"])
 
-    def use_potion(self, potion_number: int, operation: str):
-        if len(self.potions) < potion_number:
-            print(f"potion #{potion_number} not found")
+    def use_potion(self, operation: str):
+        if self.potion_ui["isHidden"]:
+            print("Cannot interact with potion; potion UI is hidden")
             return
 
-        self.post_data(f"usePotion?index={potion_number - 1}&operation={operation}")
+        if operation not in ["use", "discard"]:
+            print(f"Invalid potion operation: {operation}")
+            return
+
+        if operation == "use":
+            ctrl.mouse_move(
+                self.potion_ui["topButton"]["x"], self.potion_ui["topButton"]["y"]
+            )
+        else:
+            ctrl.mouse_move(
+                self.potion_ui["bottomButton"]["x"], self.potion_ui["bottomButton"]["y"]
+            )
+
+        time.sleep(0.05)
+        ctrl.mouse_click()
 
     def go_to_relic(self, relic_number: int):
         if len(self.relics) < relic_number:
@@ -160,6 +252,9 @@ class SayTheSpireController:
 
         ctrl.mouse_move(boss_relic["x"], boss_relic["y"])
 
+    def navigate(self, navigation_item: str):
+        self.post_data(f"navigate?item={navigation_item}")
+
 
 say_the_spire_controller = SayTheSpireController()
 
@@ -172,19 +267,21 @@ class SayTheSpireActions:
         say_the_spire_controller.go_to_player()
 
     def spire_monster(monster_number: int, click: int = -1):
-        """Mouseover an monster"""
+        """Mouseover and optionally click a monster"""
         say_the_spire_controller.fetch_monster_data()
         say_the_spire_controller.go_to_monster(monster_number, click)
 
     def spire_potion(potion_number: int):
-        """Mouseover a potion"""
+        """Mouseover and click a potion to open its menu"""
         say_the_spire_controller.fetch_potion_data()
         say_the_spire_controller.go_to_potion(potion_number)
+        time.sleep(0.05)
+        ctrl.mouse_click()
 
-    def spire_use_potion(potion_number: int, operation: str = "use"):
-        """Use a potion"""
-        say_the_spire_controller.fetch_potion_data()
-        say_the_spire_controller.use_potion(potion_number, operation)
+    def spire_use_potion(operation: str):
+        """Use or discard a potion"""
+        say_the_spire_controller.fetch_potion_ui_data()
+        say_the_spire_controller.use_potion(operation)
 
     def spire_relic(relic_number: int):
         """Mouseover a relic"""
@@ -200,7 +297,13 @@ class SayTheSpireActions:
         say_the_spire_controller.go_to_reward(reward_number)
         say_the_spire_controller.go_to_boss_relic(reward_number)
 
+    # Note: currently unused
     def spire_boss_relic(boss_relic_number: int):
         """Mouseover a boss relic"""
-        say_the_spire_controller.go_to_reward(boss_relic_number)
+        say_the_spire_controller.fetch_boss_relic_data()
         say_the_spire_controller.go_to_boss_relic(boss_relic_number)
+
+    def spire_navigate(spire_navigation_item: str):
+        """Navigate using an item in a menu"""
+        print(f"Navigate to {spire_navigation_item}")
+        say_the_spire_controller.navigate(spire_navigation_item)

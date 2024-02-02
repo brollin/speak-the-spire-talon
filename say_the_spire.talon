@@ -6,9 +6,8 @@ app.bundle: net.java.openjdk.cmd
 ^enemy [<number_small>]$: user.spire_monster(number_small or 1)
 ^click enemy <number_small>$: user.spire_monster(number_small, 0)
 
-^(potion | item) [<number_small>]$: user.spire_potion(number_small or 1)
-^use (potion | item) <number_small>$: user.spire_use_potion(number_small)
-^discard (potion | item) <number_small>$: user.spire_use_potion(number_small, "discard")
+^potion [<number_small>]$: user.spire_potion(number_small or 1)
+^{user.spire_potion_operation} [potion]$: user.spire_use_potion(spire_potion_operation)
 
 ^relic [<number_small>]$: user.spire_relic(number_small or 1)
 
@@ -21,21 +20,25 @@ app.bundle: net.java.openjdk.cmd
     mouse_click(0)
 
 ^reward [<number_small>]$: user.spire_reward(number_small or 1)
-^boss relic [<number_small>]$: user.spire_boss_relic(number_small or 1)
 
+^{user.spire_navigation_item}$: user.spire_navigate(spire_navigation_item)
+
+^map$: key(m)
 
 # TODO:
-# go to a reward relic/entry
-# work out monster indexing kinks
-# test out with a high number of relics
-# make voice commands for clicking "new game", characters, etc.
 # write documentation
+# using potions - finish refactor
+# in game menu opening, save and quit, abandon run navigation items
+# bug handling
+# shop stuff
+# for only certain battles with responding enemies, change enemy numbering
 # upload to steam: https://steamcommunity.com/sharedfiles/filedetails/?id=1767940979
 
-# A later version:
-# provide an ui that shows indices of all monsters, relics, potions, etc.
-# build in some kind of scrolling mechanism
-# makes sure voice commands at unexpected times don't crash the game
-# remove any dependence on talonhub/community
-# remove any dependence on keyboard mod
-# make sure it works on windows
+# LATER:
+# create talon mode for the game?
+# reimplement sound
+# test out with a high number of relics
+# provide a ui that shows numbering of all monsters, relics, potions, etc.
+# build in some kind of scrolling mechanism?
+# remove any dependence on talonhub/community?
+# scrolling help?
