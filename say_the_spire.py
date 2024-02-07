@@ -23,7 +23,7 @@ ctx = Context()
 ctx.lists["user.spire_navigation_item"] = {
     # Main Menu
     "play": "play",
-    "continue": "resume",
+    "continue": "continue",
     "resume": "resume",
     "abandon": "abandon",
     "abandon game": "abandon",
@@ -72,12 +72,19 @@ ctx.lists["user.spire_navigation_item"] = {
     "yes": "yes",
     "no": "no",
     # Gameplay
-    "reset": "reset",
+    "release": "release",
+    "main menu": "mainMenu",
+    "proceed": "proceed",
+    "skip": "skip",
+    "confirm": "confirm",
+    "cancel": "cancel",
+    "return": "return",
+    "peek": "peek",
 }
 ctx.lists["user.spire_potion_operation"] = {
     "drink": "use",
     "throw": "use",
-    "discard": "discard",
+    # Note: "discard" is also possible, just handled elsewhere
 }
 
 
@@ -128,19 +135,93 @@ class SayTheSpireController:
     def fetch_player_data(self):
         player_data = self.fetch_data("player")
         self.invert_y_coordinate(player_data)
+        [self.invert_y_coordinate(orb) for orb in player_data["orbs"]]
 
         self.player = player_data
 
     def fetch_monster_data(self):
         monster_data = self.fetch_data("monsters")
         [self.invert_y_coordinate(monster) for monster in monster_data]
-
-        # # filter out dead monsters
-        # filtered_monsters = [
-        #     monster for monster in monster_data if monster["currentHealth"] > 0
-        # ]
-
         self.monsters = monster_data
+        self.monster_slime_filter()
+        self.monster_reptomancer_filter()
+        self.monster_collector_filter()
+        self.monster_gremlin_filter()
+
+    def monster_slime_filter(self):
+        filtered_monsters = []
+        for monster in self.monsters:
+            # Slimes should be filtered out when they are dead always
+            # TODO: Hallway slime fight is a little confusing
+            if monster["currentHealth"] <= 0 and "Slime" in monster["name"]:
+                continue
+
+            filtered_monsters.append(monster)
+
+        self.monsters = filtered_monsters
+
+    def monster_reptomancer_filter(self):
+        # first check if there is a reptomancer
+        reptomancer_index = -1
+        for index, monster in enumerate(self.monsters):
+            if "Reptomancer" in monster["name"]:
+                reptomancer_index = index
+                break
+
+        if reptomancer_index < 0:
+            return
+
+        # filter out dead swords always for now
+        filtered_monsters = []
+        for monster in self.monsters:
+            if monster["currentHealth"] <= 0:
+                continue
+
+            filtered_monsters.append(monster)
+
+        self.monsters = filtered_monsters
+
+    def monster_collector_filter(self):
+        # first check if there is a collector
+        collector_index = -1
+        for index, monster in enumerate(self.monsters):
+            if "Collector" in monster["name"]:
+                collector_index = index
+                break
+
+        if collector_index < 0:
+            return
+
+        # filter out dead minions always for now
+        filtered_monsters = []
+        for monster in self.monsters:
+            if monster["currentHealth"] <= 0:
+                continue
+
+            filtered_monsters.append(monster)
+
+        self.monsters = filtered_monsters
+
+    def monster_gremlin_filter(self):
+        # first check if there is a collector
+        collector_index = -1
+        for index, monster in enumerate(self.monsters):
+            if "Gremlin Leader" in monster["name"]:
+                collector_index = index
+                break
+
+        if collector_index < 0:
+            return
+
+        # filter out dead minions always for now
+        filtered_monsters = []
+        for monster in self.monsters:
+            if monster["currentHealth"] <= 0:
+                continue
+
+            filtered_monsters.append(monster)
+
+        self.monsters = filtered_monsters
 
     def fetch_potion_data(self):
         potion_data = self.fetch_data("potions")
@@ -179,6 +260,15 @@ class SayTheSpireController:
 
     def go_to_player(self):
         ctrl.mouse_move(self.player["x"], self.player["y"])
+
+    def go_to_orb(self, orb_number: int):
+        if len(self.player["orbs"]) < orb_number:
+            app.notify(f"orb #{orb_number} not found")
+            return
+
+        orb = self.player["orbs"][orb_number - 1]
+
+        ctrl.mouse_move(orb["x"], orb["y"])
 
     def go_to_monster(self, monster_number: int, click: int = -1):
         if len(self.monsters) < monster_number:
@@ -264,18 +354,30 @@ class SayTheSpireController:
         ctrl.mouse_move(card["x"], card["y"])
 
     def go_to_shop_potion(self, shop_potion_number: int):
-        if len(self.shop["potions"]) < shop_potion_number:
+        if shop_potion_number > 3:
             return
 
-        potion = self.shop["potions"][shop_potion_number - 1]
+        potion = None
+        for p in self.shop["potions"]:
+            if p["slot"] == shop_potion_number - 1:
+                potion = p
+
+        if not potion:
+            return
 
         ctrl.mouse_move(potion["x"], potion["y"])
 
     def go_to_shop_relic(self, shop_relic_number: int):
-        if len(self.shop["relics"]) < shop_relic_number:
+        if shop_relic_number > 3:
             return
 
-        relic = self.shop["relics"][shop_relic_number - 1]
+        relic = None
+        for r in self.shop["relics"]:
+            if r["slot"] == shop_relic_number - 1:
+                relic = r
+
+        if not relic:
+            return
 
         ctrl.mouse_move(relic["x"], relic["y"])
 
@@ -290,6 +392,14 @@ class SayTheSpireController:
     def center_mouse(self):
         ctrl.mouse_move(self.screen.width / 2, self.screen.height / 2)
 
+    def disambiguate_discard(self):
+        if self.potion_ui["isHidden"]:
+            # If the potion UI is hidden, toggle the discard pile
+            actions.key("s")
+        else:
+            # If the potion UI is visible, discard the potion
+            self.use_potion("discard")
+
 
 say_the_spire_controller = SayTheSpireController()
 
@@ -300,6 +410,11 @@ class SayTheSpireActions:
         """Mouseover the player"""
         say_the_spire_controller.fetch_player_data()
         say_the_spire_controller.go_to_player()
+
+    def spire_orb(orb_number: int):
+        """Mouseover an orb"""
+        say_the_spire_controller.fetch_player_data()
+        say_the_spire_controller.go_to_orb(orb_number)
 
     def spire_monster(monster_number: int, click: int = -1):
         """Mouseover and optionally click a monster"""
@@ -365,3 +480,8 @@ class SayTheSpireActions:
         """Mouseover the removal service in the shop"""
         say_the_spire_controller.fetch_shop_data()
         say_the_spire_controller.go_to_shop_remove()
+
+    def spire_discard():
+        """Either toggle view of discard pile or discard potion"""
+        say_the_spire_controller.fetch_potion_ui_data()
+        say_the_spire_controller.disambiguate_discard()
