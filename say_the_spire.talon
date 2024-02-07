@@ -83,7 +83,6 @@ app.bundle: net.java.openjdk.cmd
 ^menu$: key(escape)
 
 # TODO:
-# write documentation
 # upload to steam: https://steamcommunity.com/sharedfiles/filedetails/?id=1767940979
 
 # LATER:

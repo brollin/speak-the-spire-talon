@@ -50,6 +50,20 @@ TODO: expand this section
 TODO: I will write actual instructions in the future, but for now take a look at
 all of the voice commands in [say_the_spire.talon](./say_the_spire.talon).
 
+### Known limitations
+
+Some actions don't have voice commands yet, so you will need to use a mouse or
+the talonhub/community voice commands. Here are the list of things that aren't
+supported quite yet:
+
+- The main game menus have decent coverage, but not yet complete coverage.
+- No built-in way to scroll up and down.
+- No way to deselect cards in a multicard selection situation, such as when you
+  use the gambler's brew potion.
+- "Wheel of Change" and "Match and Keep" events.
+
+See something else? File an issue!
+
 ## Contributing
 
 Please help me make this better by filing issues or submitting pull requests!
