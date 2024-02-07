@@ -2,7 +2,7 @@
 
 > This is the Talon portion of the Slay the Spire voice command mod "Say the
 > Spire". See [SayTheSpireMod](https://github.com/brollin/SayTheSpireMod) for
-> the Talon portion, but note that the majority of the documentation is in this
+> the mod portion, but note that the majority of the documentation is in this
 > repo.
 
 Sure you've walked your way to the top, but have you talked your way to the top?
