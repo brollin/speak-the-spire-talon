@@ -43,14 +43,15 @@ you.
 > TODO: expand this section
 
 1. Install Slay the Spire with Steam.
-1. Install Say the Spire and its required mods in the
-   [Steam workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3156349163).
-   You install mods by "subscribing" to them. The required mods are listed on
-   the Say the Spire page, and they are:
-   [ModTheSpire](https://steamcommunity.com/workshop/filedetails/?id=1605060445),
-   [BaseMod](https://steamcommunity.com/workshop/filedetails/?id=1605833019),
-   and
-   [Keyboard Shortcuts](https://steamcommunity.com/workshop/filedetails/?id=2173245479).
+1. Install
+   [Say the Spire](https://steamcommunity.com/sharedfiles/filedetails/?id=3156349163)
+   and its required mods in the Steam workshop.
+
+Note: You install mods by "subscribing" to them. The required mods are listed on
+the Say the Spire mod page, and they are:
+[ModTheSpire](https://steamcommunity.com/workshop/filedetails/?id=1605060445),
+[BaseMod](https://steamcommunity.com/workshop/filedetails/?id=1605833019), and
+[Keyboard Shortcuts](https://steamcommunity.com/workshop/filedetails/?id=2173245479).
 
 ## How to use
 
