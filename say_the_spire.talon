@@ -81,21 +81,3 @@ app.bundle: net.java.openjdk.cmd
 ^exhaust [pile]$: key(x)
 ^map$: key(m)
 ^menu$: key(escape)
-
-# TODO:
-# upload to steam: https://steamcommunity.com/sharedfiles/filedetails/?id=1767940979
-
-# LATER:
-# caw caw
-# spin the wheel event: spin the wheel
-# for battles with respawning enemies, fix enemy numbering
-# shop card numbering issue
-# deselecting cards (e.g. gamblers brew)
-# create talon mode for the game?
-# ignore normal key presses
-# get sound back: return hitbox coordinates when navigating, do click with talon?
-# test out with a high number of relics
-# provide a ui that shows numbering of all monsters, relics, potions, etc.
-# build in some kind of scrolling mechanism?
-# remove any dependence on talonhub/community?
-# account for window offset in windowed mode

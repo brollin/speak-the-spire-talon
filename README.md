@@ -17,7 +17,7 @@ There five different elements that you will need to install to get Say the Spire
 up and running. What could go wrong?
 
 1. Talon Voice software: free, amazing speech engine and Python-based framework
-1. talonhub/community: set of voice commands scripts written by the community
+1. talonhub/community: set of voice command scripts written by the community
 1. brollin/say-the-spire-talon: (this repo) Say the Spire Talon voice commands
 1. Slay the Spire, installed via Steam
 1. Say the Spire Mod, and the mods it depends on
@@ -43,7 +43,9 @@ TODO: expand this section
 TODO: expand this section
 
 1. Install Slay the Spire with Steam.
-1. ...
+1. Install Say the Spire and its required mods in the
+   [Steam workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3156349163).
+   You install mods by "subscribing" to them.
 
 ## How to use
 
