@@ -139,6 +139,14 @@ To purchase a relic or potion, use a command from above and then click.
 
 To purchase a card, simply say its number.
 
+### Miscellaneous things
+
+- "peek" to click the button that looks like an eyeball, which allows you to
+  peek the battle when choosing a card
+- sometimes you get into the keyboard mode, which selects a card by propping it
+  up. This happens if you press left, right, or enter. To exit this mode, simply
+  say "release"
+
 ### Known limitations
 
 Some actions don't have voice commands yet, so you will need to use a mouse or
