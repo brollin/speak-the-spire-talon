@@ -76,10 +76,14 @@ ctx.lists["user.spire_navigation_item"] = {
     "main menu": "mainMenu",
     "proceed": "proceed",
     "skip": "skip",
+    "skip card": "skip",
+    "skip potion": "skip",
+    "skip merchant": "skip",
     "confirm": "confirm",
     "cancel": "cancel",
     "return": "return",
     "peek": "peek",
+    "cucaw": "caw",
 }
 ctx.lists["user.spire_potion_operation"] = {
     "drink": "use",
