@@ -1,9 +1,9 @@
-# Say the Spire
+# Speak the Spire
 
-> This is the Talon portion of the Slay the Spire voice command mod "Say the
-> Spire". See [SayTheSpireMod](https://github.com/brollin/SayTheSpireMod) for
-> the mod portion, but note that the majority of the documentation is in this
-> repo.
+> This is the Talon portion of the Slay the Spire voice command mod "Speak the
+> Spire". See [SpeakTheSpireMod](https://github.com/brollin/SpeakTheSpireMod)
+> for the mod portion, but note that the majority of the documentation is in
+> this repo.
 
 Sure you've walked your way to the top, but have you talked your way to the top?
 This Slay the Spire mod aims to let you do just that: play the game Slay the
@@ -13,14 +13,14 @@ Spire with only voice commands.
 
 ## Installation
 
-There five different elements that you will need to install to get Say the Spire
-up and running. What could go wrong?
+There five different elements that you will need to install to get Speak the
+Spire up and running. What could go wrong?
 
 1. Talon Voice software: free, amazing speech engine and Python-based framework
 1. talonhub/community: set of voice command scripts written by the community
-1. brollin/say-the-spire-talon: (this repo) Say the Spire Talon voice commands
+1. brollin/say-the-spire-talon: (this repo) Speak the Spire Talon voice commands
 1. Slay the Spire, installed via Steam
-1. Say the Spire Mod, and the mods it depends on
+1. Speak the Spire Mod, and the mods it depends on
 
 The first two will be familiar to prior Talon users. There isn't anything
 special about step (3) besides putting this repository inside your Talon user
@@ -44,11 +44,11 @@ you.
 
 1. Install Slay the Spire with Steam.
 1. Install
-   [Say the Spire](https://steamcommunity.com/sharedfiles/filedetails/?id=3156349163)
+   [Speak the Spire](https://steamcommunity.com/sharedfiles/filedetails/?id=3156349163)
    and its required mods in the Steam workshop.
 
 Note: You install mods by "subscribing" to them. The required mods are listed on
-the Say the Spire mod page, and they are:
+the Speak the Spire mod page, and they are:
 [ModTheSpire](https://steamcommunity.com/workshop/filedetails/?id=1605060445),
 [BaseMod](https://steamcommunity.com/workshop/filedetails/?id=1605833019), and
 [Keyboard Shortcuts](https://steamcommunity.com/workshop/filedetails/?id=2173245479).
