@@ -1,10 +1,5 @@
 # Speak the Spire
 
-> This is the Talon portion of the Slay the Spire voice command mod "Speak the
-> Spire". See [SpeakTheSpireMod](https://github.com/brollin/SpeakTheSpireMod)
-> for the mod portion, but note that the majority of the documentation is in
-> this repo.
-
 Sure you've walked your way to the top, but have you talked your way to the top?
 This Slay the Spire mod aims to let you do just that: play the game Slay the
 Spire with only voice commands.
@@ -13,7 +8,7 @@ Spire with only voice commands.
 
 ## Installation
 
-There five different elements that you will need to install to get Speak the
+There are five different elements that you will need to install to get Speak the
 Spire up and running. What could go wrong?
 
 1. Talon Voice software: free, amazing speech engine and Python-based framework
@@ -166,5 +161,10 @@ supported quite yet:
 See something else? It would be great if you could file an issue here on GitHub.
 
 ## Contributing
+
+> This is the Talon portion of the Slay the Spire voice command mod "Speak the
+> Spire". See [SpeakTheSpireMod](https://github.com/brollin/SpeakTheSpireMod)
+> for the mod portion, but note that the majority of the documentation is in
+> this repo.
 
 Please help me make this better by filing issues or submitting pull requests!
