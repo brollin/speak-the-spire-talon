@@ -44,7 +44,7 @@ you.
 
 1. Install Slay the Spire with Steam.
 1. Install
-   [Speak the Spire](https://steamcommunity.com/sharedfiles/filedetails/?id=3156349163)
+   [Speak the Spire](https://steamcommunity.com/sharedfiles/filedetails/?id=3159200524)
    and its required mods in the Steam workshop.
 
 Note: You install mods by "subscribing" to them. The required mods are listed on
