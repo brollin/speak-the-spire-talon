@@ -1,10 +1,14 @@
-# Speak the Spire
+<p align="center">
+  <img alt="Speak the Spire" src="./logo.png" width="200" />
+</p>
 
-<img align="center" src="./logo.png" width="200" />
+<p align="center">
+So you've walked your way to the top, but have you talked your way to the top?
+</p>
 
-Sure you've walked your way to the top, but have you talked your way to the top?
-This Slay the Spire mod aims to let you do just that: play the game Slay the
-Spire with only voice commands.
+<p align="center">
+This Slay the Spire mod aims to let you do just that: play the game Slay the Spire with only voice commands.
+</p>
 
 ## Installation
 
@@ -25,18 +29,34 @@ you.
 
 ### Installing the Talon side
 
-> TODO: expand this section
+We will be installing Talon Voice, which is a very powerful voice command
+framework. If you would like more information about Talon, its installation, and
+basic usage, refer to the [Talon wiki](https://talon.wiki/getting_started/).
 
 1. Install [Talon Voice](https://talonvoice.com/).
-1. Install [talonhub/community](https://github.com/talonhub/community) inside
-   your Talon user directory.
-1. Install
+2. Install [talonhub/community](https://github.com/talonhub/community) one of
+   two ways:
+
+- [with git](https://github.com/talonhub/community?tab=readme-ov-file#installation)
+  if you are comfortable with the command line and git, or
+- [via zip file](https://github.com/talonhub/community?tab=readme-ov-file#alternate-installation-method-zip-file)
+  if not
+
+3. Install
    [speak-the-spire-talon](https://github.com/brollin/speak-the-spire-talon),
-   this repository, inside your Talon user directory.
+   this repository, the same way that you installed talonhub/community above.
 
-### Installing the Slay the Spire + mods
+- with git, inside your Talon user directory:
+  `git clone https://github.com/brollin/speak-the-spire-talon speak-the-spire-talon`
+- via zip file, by extracting the contents of
+  [this zip file](https://github.com/brollin/speak-the-spire-talon/archive/refs/heads/main.zip)
+  into your Talon user directory
 
-> TODO: expand this section
+You should now have a very powerful set of voice commands available to you to
+control your computer. You can learn some
+[basic commands](https://talon.wiki/basic_usage/) on the wiki.
+
+### Installing Slay the Spire + mods
 
 1. Install Slay the Spire with Steam.
 1. Install
@@ -169,3 +189,7 @@ See something else? It would be great if you could file an issue here on GitHub.
 > this repo.
 
 Please help me make this better by filing issues or submitting pull requests!
+
+## Thanks
+
+Special thanks to Mjonkey for the help working out some early issues on Windows!
