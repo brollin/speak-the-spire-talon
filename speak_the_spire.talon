@@ -1,4 +1,7 @@
-app.bundle: net.java.openjdk.cmd
+os: mac
+and app.bundle: net.java.openjdk.cmd
+os: windows
+and app.exe: java.exe
 -
 
 # Mouseover the player's character. For example: "player"

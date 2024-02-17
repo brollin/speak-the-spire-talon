@@ -4,8 +4,6 @@ Sure you've walked your way to the top, but have you talked your way to the top?
 This Slay the Spire mod aims to let you do just that: play the game Slay the
 Spire with only voice commands.
 
-**🛠️ Note: currently in beta. Works on Mac, untested on Windows. 🛠️**
-
 ## Installation
 
 There are five different elements that you will need to install to get Speak the
