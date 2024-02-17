@@ -1,5 +1,5 @@
 <p align="center">
-  <img alt="Speak the Spire" src="./logo.png" width="200" />
+  <img alt="Speak the Spire" src="./logo.png" width="400" />
 </p>
 
 <p align="center">
