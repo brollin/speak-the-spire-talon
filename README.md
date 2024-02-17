@@ -1,6 +1,6 @@
 # Speak the Spire
 
-![Speak the Spire](logo.png)
+<img align="center" src="./logo.png" width="200" />
 
 Sure you've walked your way to the top, but have you talked your way to the top?
 This Slay the Spire mod aims to let you do just that: play the game Slay the
