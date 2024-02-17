@@ -66,8 +66,8 @@ app.bundle: net.java.openjdk.cmd
 #   "Abandon Run"
 #   "Proceed"
 #   etc.
-^{user.spire_navigation_item}$:
-    user.spire_navigate(spire_navigation_item)
+^{user.spire_navigation_item} [<number_small>]$:
+    user.spire_navigate(spire_navigation_item, number_small or -1)
 
 # Center the mouse on the screen. Handy in some cases.
 ^center$:

@@ -390,8 +390,8 @@ class SayTheSpireController:
             self.shop["removalService"]["x"], self.shop["removalService"]["y"]
         )
 
-    def navigate(self, navigation_item: str):
-        self.post_data(f"navigate?item={navigation_item}")
+    def navigate(self, navigation_item: str, numeric_value: int):
+        self.post_data(f"navigate?item={navigation_item}&numericValue={numeric_value}")
 
     def center_mouse(self):
         ctrl.mouse_move(self.screen.width / 2, self.screen.height / 2)
@@ -457,9 +457,9 @@ class SayTheSpireActions:
         say_the_spire_controller.fetch_boss_relic_data()
         say_the_spire_controller.go_to_boss_relic(boss_relic_number)
 
-    def spire_navigate(spire_navigation_item: str):
+    def spire_navigate(spire_navigation_item: str, numeric_value: int):
         """Navigate using an item in a menu"""
-        say_the_spire_controller.navigate(spire_navigation_item)
+        say_the_spire_controller.navigate(spire_navigation_item, numeric_value)
 
     def spire_center_mouse():
         """Center the mouse on the screen"""
