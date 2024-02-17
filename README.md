@@ -11,7 +11,8 @@ Spire up and running. What could go wrong?
 
 1. Talon Voice software: free, amazing speech engine and Python-based framework
 1. talonhub/community: set of voice command scripts written by the community
-1. brollin/say-the-spire-talon: (this repo) Speak the Spire Talon voice commands
+1. brollin/speak-the-spire-talon: (this repo) Speak the Spire Talon voice
+   commands
 1. Slay the Spire, installed via Steam
 1. Speak the Spire Mod, and the mods it depends on
 
@@ -28,8 +29,8 @@ you.
 1. Install [talonhub/community](https://github.com/talonhub/community) inside
    your Talon user directory.
 1. Install
-   [say-the-spire-talon](https://github.com/brollin/say-the-spire-talon), this
-   repository, inside your Talon user directory.
+   [speak-the-spire-talon](https://github.com/brollin/speak-the-spire-talon),
+   this repository, inside your Talon user directory.
 
 ### Installing the Slay the Spire + mods
 
@@ -50,7 +51,7 @@ the Speak the Spire mod page, and they are:
 
 > TODO: I will expand this section in the future, so for now when in doubt take
 > a look at all of the voice commands in
-> [say_the_spire.talon](./say_the_spire.talon).
+> [speak_the_spire.talon](./speak_the_spire.talon).
 
 ### General menu navigation
 
