@@ -7,7 +7,7 @@ So you've walked your way to the top, but have you talked your way to the top?
 </p>
 
 <p align="center">
-This Slay the Spire mod aims to let you do just that: play the game Slay the Spire with only voice commands.
+This mod lets you do just that: play the game Slay the Spire with only voice commands.
 </p>
 
 ## Installation
