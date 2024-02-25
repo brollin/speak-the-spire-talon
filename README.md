@@ -12,6 +12,10 @@ This mod lets you do just that: play the game Slay the Spire with only voice com
 
 ## Installation
 
+> Note: if you are having any issues, make sure that your speak-the-spire-talon
+> Talon files are up to date! They will not auto update, so periodically you
+> will have to update them manually to get the latest functionality.
+
 There are five different elements that you will need to install to get Speak the
 Spire up and running. What could go wrong?
 
