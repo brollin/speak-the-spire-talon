@@ -72,7 +72,6 @@ ctx.lists["user.spire_navigation_item"] = {
     "yes": "yes",
     "no": "no",
     # Gameplay
-    "release": "release",
     "main menu": "mainMenu",
     "proceed": "proceed",
     "skip": "skip",
@@ -83,7 +82,15 @@ ctx.lists["user.spire_navigation_item"] = {
     "cancel": "cancel",
     "return": "return",
     "peek": "peek",
+    "flip": "flip",  # match and keep event
     "cucaw": "caw",
+    # Card Popup
+    "view upgrade": "viewUpgrade",
+    "upgrade": "viewUpgrade",
+    "beta art": "betaArt",
+    "next": "next",
+    "previous": "previous",
+    "last": "previous",
 }
 ctx.lists["user.spire_potion_operation"] = {
     "drink": "use",
@@ -131,7 +138,11 @@ class SayTheSpireController:
 
     def post_data(self, path: str):
         try:
-            urllib.request.urlopen(f"http://{HOST}:{PORT}/{path}", data=b"")
+            response = urllib.request.urlopen(
+                f"http://{HOST}:{PORT}/{path}", data=b""
+            ).read()
+            # app.notify("Say the Spire", f"Response: {body}")
+            return response
         except Exception as e:
             app.notify("Say the Spire", f"Error posting {path}: {str(e)}")
             raise e
@@ -391,7 +402,23 @@ class SayTheSpireController:
         )
 
     def navigate(self, navigation_item: str, numeric_value: int):
-        self.post_data(f"navigate?item={navigation_item}&numericValue={numeric_value}")
+        response = self.post_data(
+            f"navigate?item={navigation_item}&numericValue={numeric_value}"
+        )
+
+        # If the response is valid JSON, parse it for a follow up action
+        try:
+            self.perform_action(json.loads(response))
+        except:
+            return
+
+    def perform_action(self, action: dict):
+        if action["type"] == "click":
+            self.invert_y_coordinate(action)
+            ctrl.mouse_move(action["x"], action["y"])
+            ctrl.mouse_click()
+        elif action["type"] == "key":
+            actions.key(action["key"])
 
     def center_mouse(self):
         ctrl.mouse_move(self.screen.width / 2, self.screen.height / 2)
