@@ -70,8 +70,9 @@ control your computer. You can learn some
 Note: You install mods by "subscribing" to them. The required mods are listed on
 the Speak the Spire mod page, and they are:
 [ModTheSpire](https://steamcommunity.com/workshop/filedetails/?id=1605060445),
-[BaseMod](https://steamcommunity.com/workshop/filedetails/?id=1605833019), and
-[Keyboard Shortcuts](https://steamcommunity.com/workshop/filedetails/?id=2173245479).
+[BaseMod](https://steamcommunity.com/workshop/filedetails/?id=1605833019),
+[Keyboard Shortcuts](https://steamcommunity.com/workshop/filedetails/?id=2173245479), and
+[StSLib](https://steamcommunity.com/workshop/filedetails/?id=1609158507).
 
 ## How to use
 
