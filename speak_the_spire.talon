@@ -84,3 +84,6 @@ and app.exe: java.exe
 ^exhaust [pile]$: key(x)
 ^map$: key(m)
 ^menu$: key(escape)
+
+# Turn off repeater ordinals (optional; prevents accidental repeats)
+<user.ordinals>: skip()
