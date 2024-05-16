@@ -131,7 +131,7 @@ class SayTheSpireController:
                 urllib.request.urlopen(f"http://{HOST}:{PORT}/{path}").read()
             )
         except Exception as e:
-            app.notify("Say the Spire", f"Error fetching {path} data: {str(e)}")
+            app.notify("Speak the Spire", f"Error fetching {path} data: {str(e)}")
             raise e
 
         return data
@@ -141,10 +141,10 @@ class SayTheSpireController:
             response = urllib.request.urlopen(
                 f"http://{HOST}:{PORT}/{path}", data=b""
             ).read()
-            # app.notify("Say the Spire", f"Response: {body}")
+            # app.notify("Speak the Spire", f"Response: {body}")
             return response
         except Exception as e:
-            app.notify("Say the Spire", f"Error posting {path}: {str(e)}")
+            app.notify("Speak the Spire", f"Error posting {path}: {str(e)}")
             raise e
 
     def fetch_player_data(self):
