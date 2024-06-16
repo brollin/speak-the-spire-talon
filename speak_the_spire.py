@@ -273,8 +273,12 @@ class SayTheSpireController:
         self.invert_y_coordinate(shop_data["removalService"])
         self.shop = shop_data
 
+    def mouse_move_relative(self, x: int, y: int):
+        rect = ui.active_window().rect
+        ctrl.mouse_move(rect.x + x, rect.y + y)
+
     def go_to_player(self):
-        ctrl.mouse_move(self.player["x"], self.player["y"])
+        self.mouse_move_relative(self.player["x"], self.player["y"])
 
     def go_to_orb(self, orb_number: int):
         if len(self.player["orbs"]) < orb_number:
@@ -283,7 +287,7 @@ class SayTheSpireController:
 
         orb = self.player["orbs"][orb_number - 1]
 
-        ctrl.mouse_move(orb["x"], orb["y"])
+        self.mouse_move_relative(orb["x"], orb["y"])
 
     def go_to_monster(self, monster_number: int, click: int = -1):
         if len(self.monsters) < monster_number:
@@ -292,7 +296,7 @@ class SayTheSpireController:
 
         monster = self.monsters[monster_number - 1]
 
-        ctrl.mouse_move(monster["x"], monster["y"])
+        self.mouse_move_relative(monster["x"], monster["y"])
         long_click(click)
 
     def go_to_potion(self, potion_number: int):
@@ -302,7 +306,7 @@ class SayTheSpireController:
 
         potion = self.potions[potion_number - 1]
 
-        ctrl.mouse_move(potion["x"], potion["y"])
+        self.mouse_move_relative(potion["x"], potion["y"])
 
     def use_potion(self, operation: str):
         if self.potion_ui["isHidden"]:
@@ -319,7 +323,7 @@ class SayTheSpireController:
             else self.potion_ui["bottomButton"]
         )
 
-        ctrl.mouse_move(potion_button["x"], potion_button["y"])
+        self.mouse_move_relative(potion_button["x"], potion_button["y"])
         time.sleep(0.05)
         ctrl.mouse_click()
 
@@ -330,7 +334,7 @@ class SayTheSpireController:
 
         relic = self.relics[relic_number - 1]
 
-        ctrl.mouse_move(relic["x"], relic["y"])
+        self.mouse_move_relative(relic["x"], relic["y"])
 
     def go_to_reward(self, reward_number: int):
         if len(self.rewards) < reward_number:
@@ -339,7 +343,7 @@ class SayTheSpireController:
 
         reward = self.rewards[reward_number - 1]
 
-        ctrl.mouse_move(reward["x"], reward["y"])
+        self.mouse_move_relative(reward["x"], reward["y"])
 
     def go_to_boss_relic(self, boss_relic_number: int):
         if len(self.boss_relics) < boss_relic_number:
@@ -348,7 +352,7 @@ class SayTheSpireController:
 
         boss_relic = self.boss_relics[boss_relic_number - 1]
 
-        ctrl.mouse_move(boss_relic["x"], boss_relic["y"])
+        self.mouse_move_relative(boss_relic["x"], boss_relic["y"])
 
     def go_to_shop_card(self, shop_card_number: int):
         if (
@@ -366,7 +370,7 @@ class SayTheSpireController:
             ]
         )
 
-        ctrl.mouse_move(card["x"], card["y"])
+        self.mouse_move_relative(card["x"], card["y"])
 
     def go_to_shop_potion(self, shop_potion_number: int):
         if shop_potion_number > 3:
@@ -380,7 +384,7 @@ class SayTheSpireController:
         if not potion:
             return
 
-        ctrl.mouse_move(potion["x"], potion["y"])
+        self.mouse_move_relative(potion["x"], potion["y"])
 
     def go_to_shop_relic(self, shop_relic_number: int):
         if shop_relic_number > 3:
@@ -394,10 +398,10 @@ class SayTheSpireController:
         if not relic:
             return
 
-        ctrl.mouse_move(relic["x"], relic["y"])
+        self.mouse_move_relative(relic["x"], relic["y"])
 
     def go_to_shop_remove(self):
-        ctrl.mouse_move(
+        self.mouse_move_relative(
             self.shop["removalService"]["x"], self.shop["removalService"]["y"]
         )
 
@@ -415,13 +419,13 @@ class SayTheSpireController:
     def perform_action(self, action: dict):
         if action["type"] == "click":
             self.invert_y_coordinate(action)
-            ctrl.mouse_move(action["x"], action["y"])
+            self.mouse_move_relative(action["x"], action["y"])
             ctrl.mouse_click()
         elif action["type"] == "key":
             actions.key(action["key"])
 
     def center_mouse(self):
-        ctrl.mouse_move(self.screen.width / 2, self.screen.height / 2)
+        self.mouse_move_relative(self.screen.width / 2, self.screen.height / 2)
 
     def disambiguate_discard(self):
         if self.potion_ui["isHidden"]:
