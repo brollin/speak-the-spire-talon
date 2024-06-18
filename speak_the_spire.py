@@ -121,10 +121,6 @@ class SayTheSpireController:
     def __init__(self) -> None:
         self.screen = ui.screens()[0]
 
-    def invert_y_coordinate(self, item_with_coordinates: dict) -> None:
-        # flip the y coordinates to match Talon's
-        item_with_coordinates["y"] = self.screen.height - item_with_coordinates["y"]
-
     def fetch_data(self, path: str) -> dict:
         try:
             data = json.loads(
@@ -149,14 +145,11 @@ class SayTheSpireController:
 
     def fetch_player_data(self):
         player_data = self.fetch_data("player")
-        self.invert_y_coordinate(player_data)
-        [self.invert_y_coordinate(orb) for orb in player_data["orbs"]]
 
         self.player = player_data
 
     def fetch_monster_data(self):
         monster_data = self.fetch_data("monsters")
-        [self.invert_y_coordinate(monster) for monster in monster_data]
         self.monsters = monster_data
         self.monster_slime_filter()
         self.monster_reptomancer_filter()
@@ -240,42 +233,31 @@ class SayTheSpireController:
 
     def fetch_potion_data(self):
         potion_data = self.fetch_data("potions")
-        [self.invert_y_coordinate(potion) for potion in potion_data]
         self.potions = potion_data
 
     def fetch_potion_ui_data(self):
         potion_ui_data = self.fetch_data("potionUi")
-        self.invert_y_coordinate(potion_ui_data["topButton"])
-        self.invert_y_coordinate(potion_ui_data["bottomButton"])
         self.potion_ui = potion_ui_data
 
     def fetch_relic_data(self):
         relic_data = self.fetch_data("relics")
-        [self.invert_y_coordinate(relic) for relic in relic_data]
         self.relics = relic_data
 
     def fetch_reward_data(self):
         reward_data = self.fetch_data("rewards")
-        [self.invert_y_coordinate(reward) for reward in reward_data]
         self.rewards = reward_data
 
     def fetch_boss_relic_data(self):
         boss_relic_data = self.fetch_data("bossRelics")
-        [self.invert_y_coordinate(boss_relic) for boss_relic in boss_relic_data]
         self.boss_relics = boss_relic_data
 
     def fetch_shop_data(self):
         shop_data = self.fetch_data("shop")
-        [self.invert_y_coordinate(relic) for relic in shop_data["relics"]]
-        [self.invert_y_coordinate(potion) for potion in shop_data["potions"]]
-        [self.invert_y_coordinate(card) for card in shop_data["coloredCards"]]
-        [self.invert_y_coordinate(card) for card in shop_data["colorlessCards"]]
-        self.invert_y_coordinate(shop_data["removalService"])
         self.shop = shop_data
 
     def mouse_move_relative(self, x: int, y: int):
         rect = ui.active_window().rect
-        ctrl.mouse_move(rect.x + x, rect.y + y)
+        ctrl.mouse_move(rect.x + x, rect.y + rect.height - y)
 
     def go_to_player(self):
         self.mouse_move_relative(self.player["x"], self.player["y"])
@@ -418,14 +400,14 @@ class SayTheSpireController:
 
     def perform_action(self, action: dict):
         if action["type"] == "click":
-            self.invert_y_coordinate(action)
             self.mouse_move_relative(action["x"], action["y"])
             ctrl.mouse_click()
         elif action["type"] == "key":
             actions.key(action["key"])
 
     def center_mouse(self):
-        self.mouse_move_relative(self.screen.width / 2, self.screen.height / 2)
+        rect = ui.active_window().rect
+        self.mouse_move_relative(rect.x + rect.center.x, rect.y + rect.center.y)
 
     def disambiguate_discard(self):
         if self.potion_ui["isHidden"]:
