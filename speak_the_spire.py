@@ -407,7 +407,7 @@ class SayTheSpireController:
 
     def center_mouse(self):
         rect = ui.active_window().rect
-        self.mouse_move_relative(rect.x + rect.center.x, rect.y + rect.center.y)
+        ctrl.mouse_move(rect.center.x, rect.center.y)
 
     def disambiguate_discard(self):
         if self.potion_ui["isHidden"]:
